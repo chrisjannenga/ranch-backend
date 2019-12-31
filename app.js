@@ -2,11 +2,22 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+
+mongoose.connect(`mongodb+srv://${process.env.MONGO_ATLAS_USER}:${process.env.MONGO_ATLAS_PASSWORD}@${process.env.MONGO_DATABASE_URI}/test?retryWrites=true&w=majority`, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+}).then(() => {
+    console.log('Connected to Atlas...');
+}).catch(() => {
+    console.log("Failed to reach Atlas...")
+});
 
 app.use(logger('dev'));
 app.use(express.json());
