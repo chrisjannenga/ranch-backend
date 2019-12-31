@@ -3,6 +3,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const mongoose = require('mongoose');
+const chalk = require('chalk');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -14,9 +15,9 @@ mongoose.connect(`mongodb+srv://${process.env.MONGO_ATLAS_USER}:${process.env.MO
     useCreateIndex: true,
     useUnifiedTopology: true
 }).then(() => {
-    console.log('Connected to Atlas...');
+    console.log(chalk.green('< - • • • Connected to Atlas • • • - >'));
 }).catch(() => {
-    console.log("Failed to reach Atlas...")
+    console.log(chalk.inverse.redBright("< - • • • Failed to reach Atlas • • • - >"));
 });
 
 app.use(logger('dev'));
