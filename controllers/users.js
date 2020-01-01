@@ -30,3 +30,41 @@ exports.createUser = (req, res, next) => {
     });
 }
 
+exports.login = (req, res, next) => {
+    let fetchedUser;
+    User.findOne({
+        email: req.body.email
+    }).then(user => {
+        if (!user) {
+            return res.status(401).json({
+                message: 'Authentication Failed... User not found.'
+            });
+        }
+        fetchedUser = user;
+        console.log(chalk.cyan(user));
+        return bycrpt.compare(req.body.password, user.password);
+    }).then(result => {
+        if (!result) {
+            return res.status(401).json({
+                message: "Wrong password. Please try again"
+            });
+        }
+        const token = jwt.sign({
+            email: fetchedUser.email,
+            userId: fetchedUser._id
+        }, process.env.JWT_KEY, {
+            expiresIn: '1hr'
+        });
+        res.status(200).json({
+            token: token,
+            expiresIn: 3600,
+            userId: fetchedUser._id
+        })
+    }).catch(error => {
+        res.status(401).json({
+            message: "Invalid credentials... Please try again.",
+            error: error
+        })
+    })
+}
+
