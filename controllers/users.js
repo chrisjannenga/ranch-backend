@@ -1,4 +1,4 @@
-const bycrpt = require('bycrptjs');
+const bycrpt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const chalk = require('chalk');
 
@@ -19,7 +19,7 @@ exports.createUser = (req, res, next) => {
                 message: 'User created successfully.',
                 data: result
             });
-            console.log(chalk.green('User Created at ' + Date()));
+            console.log(chalk.magenta('User Created at ' + Date()));
         }).catch(error => {
             res.status(500).json({
                 message: "Failed to create user.",
@@ -41,7 +41,7 @@ exports.login = (req, res, next) => {
             });
         }
         fetchedUser = user;
-        console.log(chalk.cyan(user));
+        console.log(chalk.magenta(user));
         return bycrpt.compare(req.body.password, user.password);
     }).then(result => {
         if (!result) {

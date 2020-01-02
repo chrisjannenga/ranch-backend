@@ -5,8 +5,9 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 const chalk = require('chalk');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const authRouter = require('./routes/auth');
 
 var app = express();
 
@@ -36,5 +37,6 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/auth', authRouter);
 
 module.exports = app;
